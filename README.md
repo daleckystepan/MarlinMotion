@@ -1,3 +1,4 @@
 ### Marlin Motion Simulator ###
 
-`./MarlinMotion && gnuplot -p plot.gp
+# Run #
+`./MarlinMotion && gnuplot -p plot.gp`
