@@ -1,16 +1,17 @@
 #! /usr/bin/env python3
 
 import argparse
-import math
 from enum import Enum
 
+# Differential equations
 def integrate(t, state, arg):
 
-    v = arg
-    d = state[1]
+    v = arg       # v = int. a    a = arg      = acceleration parameter
+    d = state[1]  # d = int. v    v = state[1] = velocity
 
     return [d, v]
 
+# Runge Kutta 4th order
 def step(t, state, h, arg):
     k1 = integrate(t, state, arg)  
 
@@ -36,8 +37,8 @@ def step(t, state, h, arg):
 
 class State(Enum):
     INCRERASING = 1
-    CONSTANT = 2
-    DECREASING = 3
+    CONSTANT    = 2
+    DECREASING  = 3
 
 def main():
     # Parse arguments, default values
@@ -49,7 +50,7 @@ def main():
     parser.add_argument("-v", "--vmax",  help="Max velocity",       action="store", type=float, default=15)
 
     parser.add_argument(      "--dinit", help="Init displacement",  action="store", type=float, default=0)
-    parser.add_argument("-d", "--dmax",  help="Init displacement",  action="store", type=float, default=0.8)
+    parser.add_argument("-d", "--dmax",  help="Max displacement",   action="store", type=float, default=0.8)
 
     parser.add_argument("-j", "--jerk",  help="Jerk",               action="store", type=float, default=5)
 
@@ -57,9 +58,10 @@ def main():
 
     args = parser.parse_args()
 
+    # Initial conditions
+    # state=[d,v]
     state = [args.dinit, args.jerk/2]
     a = args.amax
-
     t = 0
 
     f = open('plot.dat', 'w')
@@ -68,7 +70,9 @@ def main():
     ss = State.INCRERASING
     print("State.INCRERASING")
 
+    #  distance < target distance and velocity >= 0
     while state[0] < args.dmax and state[1] >= 0:
+        # do the step and increase time
         state = step(t, state, args.step, a)
         t += args.step
 
@@ -82,15 +86,16 @@ def main():
                 print("State.CONSTANT")
 
         if ss == State.INCRERASING or ss == State.CONSTANT:
+            # t = v/a
+            # d = v0*t + 1/2*a*t^2
             tt = state[1]/args.amax
             d_limit = args.dmax - (state[1]*tt - 0.5*args.amax*tt*tt)
+
+            # We need to break to stop at v=0 at args.dmax
             if( state[0] > d_limit):
                 a = -args.amax
                 ss = State.DECREASING
                 print("State.DECREASING")
-
-
-
 
     f.close()
 
