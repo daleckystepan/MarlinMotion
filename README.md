@@ -1,10 +1,10 @@
-### Marlin Motion Simulator ###
+# Marlin Motion Simulator #
 
 Tool to simulate Marlin motion
 
 ![screenshot](https://github.com/daleckystepan/MarlinMotion/raw/master/screenshot.png)
 
-# Usage #
+## Usage ##
 ```
 ./MarlinMotion.py -h
 usage: MarlinMotion.py [-h] [-a AMAX] [-v VMAX] [--dinit DINIT] [-d DMAX]
@@ -21,5 +21,5 @@ optional arguments:
 ```
 
 
-# Example run #
+## Example run ##
 `./MarlinMotion && gnuplot -p plot.gp`
