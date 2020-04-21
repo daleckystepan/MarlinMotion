@@ -1,4 +1,4 @@
-
+set terminal qt font "Open Sans"
 
 set xlabel "Time [s]"
 #set xtics 0.01
